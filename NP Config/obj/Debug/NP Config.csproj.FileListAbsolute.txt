@@ -1,0 +1,43 @@
+C:\Users\Fedyaev\Documents\С# Programm\NP Config\NP Config\bin\Debug\NP Config.exe.config
+C:\Users\Fedyaev\Documents\С# Programm\NP Config\NP Config\bin\Debug\NP Config.exe
+C:\Users\Fedyaev\Documents\С# Programm\NP Config\NP Config\bin\Debug\NP Config.pdb
+C:\Users\Fedyaev\Documents\С# Programm\NP Config\NP Config\obj\Debug\NP Config.csprojAssemblyReference.cache
+C:\Users\Fedyaev\Documents\С# Programm\NP Config\NP Config\obj\Debug\NP_Config.Properties.Resources.resources
+C:\Users\Fedyaev\Documents\С# Programm\NP Config\NP Config\obj\Debug\NP Config.csproj.GenerateResource.cache
+C:\Users\Fedyaev\Documents\С# Programm\NP Config\NP Config\obj\Debug\NP Config.exe
+C:\Users\Fedyaev\Documents\С# Programm\NP Config\NP Config\obj\Debug\NP Config.pdb
+C:\Users\Fedyaev\Documents\С# Programm\NP Config\NP Config\obj\Debug\NP_Config.Form1.resources
+C:\Users\Fedyaev\Documents\С# Programm\NP Config\NP Config\obj\Debug\NP_Config.UserControl1.resources
+D:\С#\NP Config\NP Config\bin\Debug\NP Config.exe.config
+D:\С#\NP Config\NP Config\bin\Debug\NP Config.exe
+D:\С#\NP Config\NP Config\bin\Debug\NP Config.pdb
+D:\С#\NP Config\NP Config\obj\Debug\NP Config.csprojAssemblyReference.cache
+D:\С#\NP Config\NP Config\obj\Debug\NP_Config.Form1.resources
+D:\С#\NP Config\NP Config\obj\Debug\NP_Config.Properties.Resources.resources
+D:\С#\NP Config\NP Config\obj\Debug\NP_Config.UserControl1.resources
+D:\С#\NP Config\NP Config\obj\Debug\NP Config.csproj.GenerateResource.cache
+D:\С#\NP Config\NP Config\obj\Debug\NP Config.exe
+D:\С#\NP Config\NP Config\obj\Debug\NP Config.pdb
+Z:\С#\GIT\NP_Config\NP Config\bin\Debug\NP Config.exe.config
+Z:\С#\GIT\NP_Config\NP Config\obj\Debug\NP Config.exe
+Z:\С#\GIT\NP_Config\NP Config\obj\Debug\NP Config.pdb
+D:\С#\КБ4\npconfig\NP Config\bin\Debug\NP Config.exe.config
+D:\С#\КБ4\npconfig\NP Config\bin\Debug\NP Config.exe
+D:\С#\КБ4\npconfig\NP Config\bin\Debug\NP Config.pdb
+D:\С#\КБ4\npconfig\NP Config\obj\Debug\NP Config.csprojAssemblyReference.cache
+D:\С#\КБ4\npconfig\NP Config\obj\Debug\NP_Config.Form1.resources
+D:\С#\КБ4\npconfig\NP Config\obj\Debug\NP_Config.Properties.Resources.resources
+D:\С#\КБ4\npconfig\NP Config\obj\Debug\NP_Config.UserControl1.resources
+D:\С#\КБ4\npconfig\NP Config\obj\Debug\NP Config.csproj.GenerateResource.cache
+D:\С#\КБ4\npconfig\NP Config\obj\Debug\NP Config.exe
+D:\С#\КБ4\npconfig\NP Config\obj\Debug\NP Config.pdb
+D:\GitLab_ASC\КБ4\npconfig\NP Config\bin\Debug\NP Config.exe.config
+D:\GitLab_ASC\КБ4\npconfig\NP Config\bin\Debug\NP Config.exe
+D:\GitLab_ASC\КБ4\npconfig\NP Config\bin\Debug\NP Config.pdb
+D:\GitLab_ASC\КБ4\npconfig\NP Config\obj\Debug\NP Config.csprojAssemblyReference.cache
+D:\GitLab_ASC\КБ4\npconfig\NP Config\obj\Debug\NP_Config.Form1.resources
+D:\GitLab_ASC\КБ4\npconfig\NP Config\obj\Debug\NP_Config.Properties.Resources.resources
+D:\GitLab_ASC\КБ4\npconfig\NP Config\obj\Debug\NP_Config.UserControl1.resources
+D:\GitLab_ASC\КБ4\npconfig\NP Config\obj\Debug\NP Config.csproj.GenerateResource.cache
+D:\GitLab_ASC\КБ4\npconfig\NP Config\obj\Debug\NP Config.exe
+D:\GitLab_ASC\КБ4\npconfig\NP Config\obj\Debug\NP Config.pdb
