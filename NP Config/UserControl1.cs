@@ -24,9 +24,9 @@ namespace NP_Config
         //Массив внешних NP
         public string[,] ListExternalNP = new string[8,2];
         // Массивы адресов датчиков 1 и 2 канала
-        int[] AddressDat1 = new int[10];
+        public int[] AddressDat1 = new int[10];
         string[] X2AddressDat1 = new string[10];
-        int[] AddressDat2 = new int[10];
+        public int[] AddressDat2 = new int[10];
         string[] X2AddressDat2 = new string[10];
         // Массив индексов датчиков
         public int[] IndexDat = new int[21];
@@ -268,7 +268,7 @@ namespace NP_Config
                 Process.Start("ViewingConfig.ini");     // если да, то открываем его
             }
         }
-        public void FileConfig()         // создаем и сохраняем файл Config.ini
+        public void SaveConfig()         // создаем и сохраняем файл Config.ini
         {
             Stream myStream;
             SaveFileDialog saveFileDialog1 = new SaveFileDialog();
@@ -287,6 +287,7 @@ namespace NP_Config
                 }
             }
         }
+       
         private void numericUpDown1_ValueChanged(object sender, EventArgs e)
         {
             //изменяем видимость полей для ввода адресов датчиков
@@ -299,6 +300,7 @@ namespace NP_Config
                 else
                 {
                     tboxAddressDat1[i].Visible = false;
+                    tboxAddressDat1[i].Text = null;
                 }
             }
         }
@@ -314,6 +316,7 @@ namespace NP_Config
                 else
                 {
                     tboxAddressDat2[i].Visible = false;
+                    tboxAddressDat2[i].Text = null;
                 }
             }
         }
@@ -365,6 +368,11 @@ namespace NP_Config
                     MessageBox.Show("Не все адреса датчиков были указаны!", "Предупреждение");
                     var = true;
                 }
+            }
+            if (textBox16.Text == "" | textBox20.Text == "" | textBox24.Text == "" | textBox28.Text == "")
+            {
+                MessageBox.Show("Не все IP адреса были указаны!", "Предупреждение");
+                var = true;
             }
             return var;
         }

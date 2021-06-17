@@ -2,6 +2,7 @@
 {
     partial class Form1
     {
+        
         /// <summary>
         /// Required designer variable.
         /// </summary>
@@ -31,7 +32,9 @@
             System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(Form1));
             this.tabControl1 = new System.Windows.Forms.TabControl();
             this.tabPage1 = new System.Windows.Forms.TabPage();
-            this.button3 = new System.Windows.Forms.Button();
+            this.SaveAll = new System.Windows.Forms.Button();
+            this.Open = new System.Windows.Forms.Button();
+            this.Clear = new System.Windows.Forms.Button();
             this.button_View = new System.Windows.Forms.Button();
             this.button_Save = new System.Windows.Forms.Button();
             this.MainArea = new System.Windows.Forms.Splitter();
@@ -41,7 +44,6 @@
             this.NPAdd = new System.Windows.Forms.PictureBox();
             this.NPDelete = new System.Windows.Forms.PictureBox();
             this.tabPage2 = new System.Windows.Forms.TabPage();
-            this.Clear = new System.Windows.Forms.Button();
             this.tabControl1.SuspendLayout();
             this.tabPage1.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.NPAdd)).BeginInit();
@@ -63,8 +65,9 @@
             // tabPage1
             // 
             this.tabPage1.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(130)))), ((int)(((byte)(130)))), ((int)(((byte)(150)))));
+            this.tabPage1.Controls.Add(this.SaveAll);
+            this.tabPage1.Controls.Add(this.Open);
             this.tabPage1.Controls.Add(this.Clear);
-            this.tabPage1.Controls.Add(this.button3);
             this.tabPage1.Controls.Add(this.button_View);
             this.tabPage1.Controls.Add(this.button_Save);
             this.tabPage1.Controls.Add(this.MainArea);
@@ -81,21 +84,53 @@
             this.tabPage1.TabIndex = 0;
             this.tabPage1.Text = "Редактор Config.ini";
             // 
-            // button3
+            // SaveAll
             // 
-            this.button3.BackColor = System.Drawing.SystemColors.MenuBar;
-            this.button3.FlatAppearance.BorderColor = System.Drawing.Color.Black;
-            this.button3.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
-            this.button3.Font = new System.Drawing.Font("Arial", 8F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
-            this.button3.ForeColor = System.Drawing.Color.Black;
-            this.button3.Location = new System.Drawing.Point(1123, 7);
-            this.button3.Margin = new System.Windows.Forms.Padding(4);
-            this.button3.Name = "button3";
-            this.button3.Size = new System.Drawing.Size(133, 31);
-            this.button3.TabIndex = 279;
-            this.button3.Text = "Помощь";
-            this.button3.UseVisualStyleBackColor = false;
-            this.button3.Click += new System.EventHandler(this.button3_Click);
+            this.SaveAll.BackColor = System.Drawing.SystemColors.MenuBar;
+            this.SaveAll.FlatAppearance.BorderColor = System.Drawing.Color.Black;
+            this.SaveAll.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
+            this.SaveAll.Font = new System.Drawing.Font("Arial", 8F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
+            this.SaveAll.ForeColor = System.Drawing.Color.Black;
+            this.SaveAll.Location = new System.Drawing.Point(406, 7);
+            this.SaveAll.Margin = new System.Windows.Forms.Padding(4);
+            this.SaveAll.Name = "SaveAll";
+            this.SaveAll.Size = new System.Drawing.Size(133, 31);
+            this.SaveAll.TabIndex = 282;
+            this.SaveAll.Text = "Сохранить всё";
+            this.SaveAll.UseVisualStyleBackColor = false;
+            this.SaveAll.Click += new System.EventHandler(this.SaveAll_Click);
+            // 
+            // Open
+            // 
+            this.Open.BackColor = System.Drawing.SystemColors.MenuBar;
+            this.Open.FlatAppearance.BorderColor = System.Drawing.Color.Black;
+            this.Open.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
+            this.Open.Font = new System.Drawing.Font("Arial", 8F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
+            this.Open.ForeColor = System.Drawing.Color.Black;
+            this.Open.Location = new System.Drawing.Point(547, 7);
+            this.Open.Margin = new System.Windows.Forms.Padding(4);
+            this.Open.Name = "Open";
+            this.Open.Size = new System.Drawing.Size(133, 31);
+            this.Open.TabIndex = 281;
+            this.Open.Text = "Открыть";
+            this.Open.UseVisualStyleBackColor = false;
+            this.Open.Click += new System.EventHandler(this.Open_Click);
+            // 
+            // Clear
+            // 
+            this.Clear.BackColor = System.Drawing.SystemColors.MenuBar;
+            this.Clear.FlatAppearance.BorderColor = System.Drawing.Color.Black;
+            this.Clear.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
+            this.Clear.Font = new System.Drawing.Font("Arial", 8F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
+            this.Clear.ForeColor = System.Drawing.Color.Black;
+            this.Clear.Location = new System.Drawing.Point(688, 7);
+            this.Clear.Margin = new System.Windows.Forms.Padding(4);
+            this.Clear.Name = "Clear";
+            this.Clear.Size = new System.Drawing.Size(133, 31);
+            this.Clear.TabIndex = 280;
+            this.Clear.Text = "Очистить";
+            this.Clear.UseVisualStyleBackColor = false;
+            this.Clear.Click += new System.EventHandler(this.Clear_Click);
             // 
             // button_View
             // 
@@ -104,7 +139,7 @@
             this.button_View.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
             this.button_View.Font = new System.Drawing.Font("Arial", 8F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
             this.button_View.ForeColor = System.Drawing.Color.Black;
-            this.button_View.Location = new System.Drawing.Point(265, 7);
+            this.button_View.Location = new System.Drawing.Point(124, 7);
             this.button_View.Margin = new System.Windows.Forms.Padding(4);
             this.button_View.Name = "button_View";
             this.button_View.Size = new System.Drawing.Size(133, 31);
@@ -120,7 +155,7 @@
             this.button_Save.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
             this.button_Save.Font = new System.Drawing.Font("Arial", 8F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
             this.button_Save.ForeColor = System.Drawing.Color.Black;
-            this.button_Save.Location = new System.Drawing.Point(124, 7);
+            this.button_Save.Location = new System.Drawing.Point(265, 7);
             this.button_Save.Margin = new System.Windows.Forms.Padding(4);
             this.button_Save.Name = "button_Save";
             this.button_Save.Size = new System.Drawing.Size(133, 31);
@@ -219,22 +254,6 @@
             this.tabPage2.Text = "Сменить направление счета";
             this.tabPage2.UseVisualStyleBackColor = true;
             // 
-            // Clear
-            // 
-            this.Clear.BackColor = System.Drawing.SystemColors.MenuBar;
-            this.Clear.FlatAppearance.BorderColor = System.Drawing.Color.Black;
-            this.Clear.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
-            this.Clear.Font = new System.Drawing.Font("Arial", 8F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
-            this.Clear.ForeColor = System.Drawing.Color.Black;
-            this.Clear.Location = new System.Drawing.Point(406, 7);
-            this.Clear.Margin = new System.Windows.Forms.Padding(4);
-            this.Clear.Name = "Clear";
-            this.Clear.Size = new System.Drawing.Size(133, 31);
-            this.Clear.TabIndex = 280;
-            this.Clear.Text = "Очистить";
-            this.Clear.UseVisualStyleBackColor = false;
-            this.Clear.Click += new System.EventHandler(this.Clear_Click);
-            // 
             // Form1
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(8F, 16F);
@@ -266,8 +285,9 @@
         private System.Windows.Forms.Splitter splitter2;
         private System.Windows.Forms.Button button_View;
         private System.Windows.Forms.Button button_Save;
-        private System.Windows.Forms.Button button3;
         private System.Windows.Forms.Button Clear;
+        private System.Windows.Forms.Button Open;
+        private System.Windows.Forms.Button SaveAll;
     }
 }
 

@@ -29,6 +29,10 @@ namespace NP_Config
         private UserControl1 pages9 = new UserControl1();
         private UserControl1 pages10 = new UserControl1();
 
+        Form2 Dialog = new Form2();
+
+        //Form2 Dialog = new Form2();
+
         public UserControl1[] pages;
 
         Button[] ABC = new Button[9];
@@ -41,6 +45,7 @@ namespace NP_Config
             InitializeComponent();
             UpdateInterface();
             ButtonNP();
+            
         }
         
         public void UpdateInterface()
@@ -99,6 +104,11 @@ namespace NP_Config
                 tabPage1.Controls.Remove(ABC[quantityNP - 2]);
                 quantityNP--;
             }
+            AddDeleteView();
+        }
+
+        void AddDeleteView ()
+        {
             // Сдвигаем кнопки NPAdd/NPDelete 
             if (quantityNP > 1)
             {
@@ -205,6 +215,11 @@ namespace NP_Config
 
             for (int i = 0; i < quantityNP; i++)
             {
+                if (error = pages[i].ErrorChecking()) return;  // проверка заполнения всех адресов датчиков
+            }
+
+            for (int i = 0; i < quantityNP; i++)    //для поиска датчиков во внешних NP
+            {
                 pages[i].AdressDat();
             }
             
@@ -214,7 +229,7 @@ namespace NP_Config
             if (error == false)
             {
                 pages[activeNP - 1].FormingResult();
-                pages[activeNP - 1].FileConfig();
+                pages[activeNP - 1].SaveConfig();
             }
         }
 
@@ -222,9 +237,15 @@ namespace NP_Config
         {
             error = false;
 
-            if (error = pages[activeNP - 1].ErrorChecking()) return;  // проверка заполнения всех адресов датчиков
+            for (int i = 0; i < quantityNP; i++)
+            {
+                if (error = pages[i].ErrorChecking()) return;  // проверка заполнения всех адресов датчиков
+            }
 
-            pages[activeNP - 1].AdressDat();
+            for (int i = 0; i < quantityNP; i++)    //для поиска датчиков во внешних NP
+            {
+                pages[i].AdressDat();
+            }
 
             List_alien_NP_clear();
             search_indx();
@@ -236,38 +257,117 @@ namespace NP_Config
             }
         }
 
-        private void button3_Click(object sender, EventArgs e)
-        {
-            MessageBox.Show("Помочь разработчику программы можно денежным переводом по номеру телефона: 8-912-247-13-80");
-        }
+        
 
-        public void search_indx ()
+        public void search_indx()
         {
-            for (int k = 0; k < Convert.ToInt32(pages[activeNP-1].kUCH); k++)
+            int var1;   // промежуточная переменная
+            int NP;
+            
+            bool repeat;  // true - адрес не повторяется, false - повторяется
+            for (int k = 0; k < Convert.ToInt32(pages[activeNP - 1].kUCH); k++)       // k - участки текущего NP
             {
-                for (int i = 1; i < 11; i++)
+                if (error == false)
+                for (int i = 1; i < 11; i++)            // i - адреса датчиков участка
                 {
-                    for (int m = 1; m < 21; m++)
+                    repeat = true;  
+                    // проверка повторяемости будет здесь
+                    var1 = (pages[activeNP - 1].UCH[k, i] != "") ? (Convert.ToInt32(pages[activeNP - 1].UCH[k, i])) : 0;
+                    if (var1 != 0) repeat = RepeatAdressDat(var1);
+
+                    if (repeat) // если адрес датчика не повторяется в других NP ищем индекс
                     {
-                        if(pages[activeNP - 1].UCH[k, i] == Convert.ToString(pages[activeNP - 1].IndexDat[m]))
+                        for (int m = 1; m < 21; m++)        // m - индексы датчиков текущего NP
                         {
-                            pages[activeNP - 1].UCH_Indx_Write(k, i, m);
-                            break;
-                        }
-                        else 
-                        {
-                            if ((pages[activeNP - 1].UCH[k, i] != "") & m == 20)
+                            //if (pages[activeNP - 1].UCH[k, i] == Convert.ToString(pages[activeNP - 1].IndexDat[m]))  //поиск индекса в текущем NP
+                            //{
+                            //    pages[activeNP - 1].UCH_Indx_Write(k, i, m);
+                            //    break;
+                            //}
+                            if (search_indx_activ_NP(i, k, m)) break;
+                            
+
+                            else // поиск индекса в чужих NP
                             {
-                                search_indx_alien_NP(k, i, Convert.ToInt32(pages[activeNP - 1].UCH[k, i]));
-                                break;
+                                if ((pages[activeNP - 1].UCH[k, i] != "") & m == 20)
+                                {
+                                    search_indx_alien_NP(k, i, Convert.ToInt32(pages[activeNP - 1].UCH[k, i]));
+                                    break;
+                                }
                             }
                         }
+                    }
+                    else    // иначе спрашиваем к какому NP принадлежит необходимый датчик
+                    {
+                       NP = DialogRepeatNP(var1, pages[activeNP - 1].UCH[k, 0]);
+                        if (Dialog.NPvar != 0)
+                        {
+                            if (Dialog.NPvar == 1)
+                            {
+                                for (int m = 1; m < 21; m++)        // m - индексы датчиков текущего NP
+                                {
+                                    if (search_indx_activ_NP(i, k, m)) break;
+                                    if (m == 20)
+                                    {
+                                        MessageBox.Show("Участок " + pages[activeNP - 1].UCH[k, 0] + "\r\n" + "Датчик с адресом " + var1 + " не найден!", "Ошибка!");
+                                        error = true;
+                                        break;
+                                    }
+                                }
+                            }
+                            else
+                            {
+                                search_indx_alien_NP(k, i, Convert.ToInt32(pages[activeNP - 1].UCH[k, i]), NP);
+                            }
+                        }
+                        else
+                        {
+                            error = true;
+                            break;
+                        }
+                        Dialog.NPvar = 0;
+                        
                     }
                 }
             }
         }
+        public bool search_indx_activ_NP (int i, int k, int m)
+        {
+            if (pages[activeNP - 1].UCH[k, i] == Convert.ToString(pages[activeNP - 1].IndexDat[m]))  //поиск индекса в текущем NP
+            {
+                pages[activeNP - 1].UCH_Indx_Write(k, i, m);
+                return true;
+            }
+            else return false;
+        }
+        public bool RepeatAdressDat (int var)  // Проверка повторяемости адресов датчиков в разных NP
+        {
+            int count = 0;
+            for (int i = 0; i < quantityNP; i++)
+            {
+                for (int k1 = 0; k1 < pages[i].AddressDat1.Length; k1++)
+                {
+                    if (pages[i].AddressDat1[k1] == var)
+                    { count++; }
+                }
+                for (int k2 = 0; k2 < pages[i].AddressDat2.Length; k2++)
+                {
+                    if (pages[i].AddressDat2[k2] == var)
+                    { count++; }
+                }
+            }
+            if (count <= 1) return true;
+            else return false;
+        }
+        public int DialogRepeatNP (int AdressDat, string UCH)
+        {
+            Dialog.Adress_and_UCH(AdressDat, UCH, quantityNP);
+            Dialog.ShowDialog();
+            return Dialog.NPvar;
+            //MessageBox.Show(Convert.ToString(Dialog.NPvar));
+        }
 
-        public void search_indx_alien_NP (int var1, int var2, int var3)
+        public void search_indx_alien_NP (int var1, int var2, int var3)     //определение индекса датчика в чужих NP
         {
             int status = 0;
             string NP = "";
@@ -303,6 +403,40 @@ namespace NP_Config
             }
         }
 
+        public void search_indx_alien_NP(int var1, int var2, int var3, int alienNP)
+        {
+            int status = 0;
+            string NP = "";
+            string Indx = "";
+            string result = "";
+            
+                for (int k = 1; k < 21; k++)
+                {
+                    if (pages[alienNP-1].IndexDat[k] == var3)
+                    {
+                        NP = Convert.ToString(pages[activeNP - 1].search_list_alien_NP(pages[alienNP - 1].textBox16.Text, pages[alienNP - 1].textBox20.Text));
+                        NP = Convert.ToString(Convert.ToInt32(NP), 2);
+                        NP = Convert.ToString(Convert.ToInt32(NP).ToString("D3"));
+                        Indx = Convert.ToString(k, 2);
+                        Indx = Convert.ToString(Convert.ToInt32(Indx).ToString("D5"));
+
+                        result = Convert.ToInt32((NP + Indx), 2).ToString("X2");
+                        pages[activeNP - 1].Vn_dat(var1, var2, result);
+                        status = 1;
+                        break;
+                    }
+                if (status == 1) break;
+                }
+                
+            if (status == 0)
+            {
+                string adress = pages[activeNP - 1].UCH[var1, var2];
+                string location = pages[activeNP - 1].UCH[var1, 0];
+                MessageBox.Show("Участок " + location + "\r\n" + "Датчик с адресом " + adress + " не найден!", "Ошибка!");
+                error = true;
+            }
+        }
+
         public void List_alien_NP_clear ()
         {
             for (int i = 0; i < 8; i++)
@@ -313,7 +447,7 @@ namespace NP_Config
                 }
             }
         }
-
+        
         private void Clear_Click(object sender, EventArgs e)    //Очистка формы
         {
 
@@ -330,5 +464,199 @@ namespace NP_Config
                 OpenUserControl(activeNP);
             }
         }
+
+        string[] str1;
+        string[,] AlienNP = new string [10,8]; //список внешних NP (адресов) всех открываемых конфигурационных файлов
+        
+        private void Open_Click(object sender, EventArgs e)
+        {
+            if (WarningCleanProgramm()) // подтверждение действия
+            {
+                ClearProgram(); //очистка полей
+
+                OpenFileDialog openFileDialog1 = new OpenFileDialog();
+                openFileDialog1.InitialDirectory = Environment.CurrentDirectory;
+                openFileDialog1.Filter = "Config Files|*.ini";
+                openFileDialog1.Multiselect = true;
+
+                if (openFileDialog1.ShowDialog() == DialogResult.OK)
+                {
+                    string[] result = openFileDialog1.FileNames;
+
+                    //создаем нужное количество NP
+                    for (int i = 1; i < result.Length; i++)
+                    {
+                        ButtonNPChange(1);
+                    }
+                    //перебираем все открытые файлы по порядку и заполняем поля IP и адресов датчиков
+                    for (int i = 0; i < result.Length; i++)
+                    {
+                        StreamReader sr = new StreamReader(result[i], System.Text.Encoding.Default);
+                        char[] delimiterChars = { '.', '\t' };
+                        string[] bb = { "'" };
+
+                        string[] tmp = sr.ReadLine().Split('\'');
+                        str1 = tmp[0].Split(delimiterChars);
+                        pages[i].textBox1.Text = str1[0];
+                        pages[i].textBox2.Text = str1[1];
+                        pages[i].textBox3.Text = str1[2];
+                        pages[i].textBox4.Text = str1[3];
+                        pages[i].textBox5.Text = str1[4];
+                        pages[i].textBox6.Text = str1[5];
+
+                        tmp = sr.ReadLine().Split('\'');
+                        str1 = tmp[0].Split(delimiterChars);
+                        pages[i].textBox7.Text = str1[0];
+                        pages[i].textBox8.Text = str1[1];
+                        pages[i].textBox9.Text = str1[2];
+                        pages[i].textBox10.Text = str1[3];
+                        pages[i].textBox11.Text = str1[4];
+                        pages[i].textBox12.Text = str1[5];
+
+                        tmp = sr.ReadLine().Split(':');
+                        str1 = tmp[0].Split(delimiterChars);
+                        pages[i].textBox13.Text = str1[0];
+                        pages[i].textBox14.Text = str1[1];
+                        pages[i].textBox15.Text = str1[2];
+                        pages[i].textBox16.Text = str1[3];
+
+                        tmp = sr.ReadLine().Split(':');
+                        str1 = tmp[0].Split(delimiterChars);
+                        pages[i].textBox17.Text = str1[0];
+                        pages[i].textBox18.Text = str1[1];
+                        pages[i].textBox19.Text = str1[2];
+                        pages[i].textBox20.Text = str1[3];
+
+                        tmp = sr.ReadLine().Split(':');
+                        str1 = tmp[0].Split(delimiterChars);
+                        pages[i].textBox21.Text = str1[0];
+                        pages[i].textBox22.Text = str1[1];
+                        pages[i].textBox23.Text = str1[2];
+                        pages[i].textBox24.Text = str1[3];
+
+                        tmp = sr.ReadLine().Split(':');
+                        str1 = tmp[0].Split(delimiterChars);
+                        pages[i].textBox25.Text = str1[0];
+                        pages[i].textBox26.Text = str1[1];
+                        pages[i].textBox27.Text = str1[2];
+                        pages[i].textBox28.Text = str1[3];
+
+                        sr.ReadLine();
+
+                        tmp = sr.ReadLine().Split(':', '\'');
+                        AlienNP[i, 0] = tmp[0];
+
+                        tmp = sr.ReadLine().Split(':', '\'');
+                        AlienNP[i, 1] = tmp[0];
+
+                        tmp = sr.ReadLine().Split(':', '\'');
+                        AlienNP[i, 2] = tmp[0];
+
+                        tmp = sr.ReadLine().Split(':', '\'');
+                        AlienNP[i, 3] = tmp[0];
+
+                        tmp = sr.ReadLine().Split(':', '\'');
+                        AlienNP[i, 4] = tmp[0];
+
+                        tmp = sr.ReadLine().Split(':', '\'');
+                        AlienNP[i, 5] = tmp[0];
+
+                        tmp = sr.ReadLine().Split(':', '\'');
+                        AlienNP[i, 6] = tmp[0];
+
+                        tmp = sr.ReadLine().Split(':', '\'');
+                        AlienNP[i, 7] = tmp[0];
+
+                        tmp = sr.ReadLine().Split(' ', '\'');
+                        pages[i].numericUpDown1.Value = (Convert.ToInt32(tmp[0]));
+                        for (int k = 0; k < Convert.ToInt32(tmp[0]); k++)
+                        {
+                            pages[i].tboxAddressDat1[k].Text = (Int32.Parse(tmp[k + 4], System.Globalization.NumberStyles.HexNumber)).ToString();
+                        }
+
+                        pages[i].numericUpDown2.Value = (Convert.ToInt32(tmp[1]));
+                        for (int n = 0; n < Convert.ToInt32(tmp[1]); n++)
+                        {
+                            pages[i].tboxAddressDat2[n].Text = (Int32.Parse(tmp[n + 4 + Convert.ToInt32(tmp[0])], System.Globalization.NumberStyles.HexNumber)).ToString();
+                        }
+
+                        sr.ReadLine();
+                    }
+                }
+            }
+
+        }
+        bool WarningCleanProgramm ()    //Предупреждение очистки формы при открытии файла
+        {
+            bool result = false;
+            DialogResult Dialogresult = MessageBox.Show(
+                "Перед открытием все данные будут удалены! \r\n\r\nПродолжить?",
+                "Подтвердите действие",
+                MessageBoxButtons.YesNo,
+                MessageBoxIcon.Question,
+                MessageBoxDefaultButton.Button2);
+            if (Dialogresult == DialogResult.Yes) result = true;
+            return result;
+        }
+        void ClearProgram ()    // очистка программы до исходного состояния
+        {
+            for (int i = 0; i < quantityNP; i++)
+            {
+                pages[i] = new UserControl1();
+                tabPage1.Controls.Remove(ABC[i]);
+            }
+            OpenUserControl(1);
+            quantityNP = 1; 
+            AddDeleteView();
+        }
+
+        private void SaveAll_Click(object sender, EventArgs e)
+        {
+            error = false;
+
+            for (int i = 0; i < quantityNP; i++)
+            {
+                if (error = pages[i].ErrorChecking()) return;  // проверка заполнения всех адресов датчиков
+            }
+
+            for (int i = 0; i < quantityNP; i++)    //для поиска датчиков во внешних NP
+            {
+                pages[i].AdressDat();
+            }
+
+            List_alien_NP_clear();
+            search_indx();
+
+            if (error == false)
+            {
+                for (int i = 0; i < quantityNP; i++)
+                {
+                    pages[i].FormingResult();
+                }
+
+                Stream mySaveStream;
+                SaveFileDialog saveFileDialog1 = new SaveFileDialog();
+                saveFileDialog1.RestoreDirectory = true;
+                saveFileDialog1.Filter = "txt files (*.ini)|*.ini";
+                saveFileDialog1.FilterIndex = 2;
+
+                for (int i = 0; i < quantityNP; i++)
+                {
+                    saveFileDialog1.FileName = "NP" + (i+1) + "_Config";
+
+                    if (saveFileDialog1.ShowDialog() == DialogResult.OK)
+                    {
+                        if ((mySaveStream = saveFileDialog1.OpenFile()) != null)
+                        {
+                            StreamWriter TEXT = new StreamWriter(mySaveStream);
+                            TEXT.Write(pages[i].Result.Text);
+                            TEXT.Close();
+                        }
+                    }
+                    else return;
+                }
+            }
+        }
+
     }
 }
