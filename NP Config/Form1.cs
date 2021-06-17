@@ -465,9 +465,15 @@ namespace NP_Config
             }
         }
 
+        //Переменные для функции "Открыть"
         string[] str1;
         string[,] AlienNP = new string [10,8]; //список внешних NP (адресов) всех открываемых конфигурационных файлов
-        
+        string[,] Index_AdressDat = new string[10,28];
+        int[,] hhh = new int[8,2];
+        string[] IP = new string[10];
+        string IP_NP;
+        //
+
         private void Open_Click(object sender, EventArgs e)
         {
             if (WarningCleanProgramm()) // подтверждение действия
@@ -567,24 +573,72 @@ namespace NP_Config
                         tmp = sr.ReadLine().Split(':', '\'');
                         AlienNP[i, 7] = tmp[0];
 
+                        //Конфигурация датчиков нпорта
                         tmp = sr.ReadLine().Split(' ', '\'');
                         pages[i].numericUpDown1.Value = (Convert.ToInt32(tmp[0]));
                         for (int k = 0; k < Convert.ToInt32(tmp[0]); k++)
                         {
                             pages[i].tboxAddressDat1[k].Text = (Int32.Parse(tmp[k + 4], System.Globalization.NumberStyles.HexNumber)).ToString();
+                            Index_AdressDat[i, k] = (Int32.Parse(tmp[k + 4], System.Globalization.NumberStyles.HexNumber)).ToString();
                         }
 
                         pages[i].numericUpDown2.Value = (Convert.ToInt32(tmp[1]));
                         for (int n = 0; n < Convert.ToInt32(tmp[1]); n++)
                         {
                             pages[i].tboxAddressDat2[n].Text = (Int32.Parse(tmp[n + 4 + Convert.ToInt32(tmp[0])], System.Globalization.NumberStyles.HexNumber)).ToString();
+                            Index_AdressDat[i, Int32.Parse(tmp[0]) + n] = (Int32.Parse(tmp[n + 4 + Convert.ToInt32(tmp[0])], System.Globalization.NumberStyles.HexNumber)).ToString();
+                        }
+                    }
+
+                    //Код определения IP адресов в файлах по порядку
+                    for (int i = 0; i < result.Length; i++)
+                    {
+                        StreamReader sr = new StreamReader(result[i], System.Text.Encoding.Default);
+                        char[] delimiterChars = { '.', '\t' };
+                        string[] bb = { "'" };
+                        sr.ReadLine();
+                        sr.ReadLine();
+                        string[] tmp = sr.ReadLine().Split('.', ':');
+                        IP[i] = tmp[3];
+                    }
+
+                    // Код определения участков
+                    for (int i = 0; i < result.Length; i++)
+                    {
+                        StreamReader sr = new StreamReader(result[i], System.Text.Encoding.Default);
+                        char[] delimiterChars = { '.', '\t' };
+                        string[] bb = { "'" };
+                        for (int k = 0; k < 16; k++)    //пропускаем ненужное (16 строк)
+                        {
+                            sr.ReadLine();
                         }
 
-                        sr.ReadLine();
+                        
+                        //Конфигурация датчиков, не подключенных к нпорту
+                        string[] tmp = sr.ReadLine().Split(' ', '\'');
+
+                        //определяем индекс внешнего NP и индекс датчика в этом NP
+                        for (int n = 0; n < 8; n++)
+                        {
+                            hhh[n,0] = Int32.Parse(tmp[n], System.Globalization.NumberStyles.HexNumber) >> 5;   //индекс внешнего NP
+                            hhh[n,1] = Int32.Parse(tmp[n], System.Globalization.NumberStyles.HexNumber) & 31;   //индекс датчика во внешнем NP
+                        }
+                        //Определяем адрес датчика во внешнем NP
+                        for (int m = 0; m < 8; m++)
+                        {
+                            IP_NP = AlienNP[i, hhh[m, 0]];
+                            for (int k = 0; k < quantityNP; k++)
+                            {
+                               if (pages[k].textBox16.Text == IP_NP)
+                                {
+                                    if (hhh[m, 1] != 0)
+                                    Index_AdressDat[i, m + 20] = Index_AdressDat[k, hhh[m, 1] - 1];
+                                }
+                            }
+                        }
                     }
                 }
             }
-
         }
         bool WarningCleanProgramm ()    //Предупреждение очистки формы при открытии файла
         {
