@@ -679,6 +679,12 @@ namespace NP_Config
                                     }
                                     
                                 }
+
+                                for (int t = 0; t < 11; t++)    // перебираем добавленный участок в массиве UCH и заменяем null на ""
+                                {
+                                if (pages[i].UCH[pages[i].kUCH, t] == null) pages[i].UCH[pages[i].kUCH, t] = "";
+                                }
+
                                 pages[i].kUCH++;
                         }
                         pages[i].UCHMetod();
@@ -737,47 +743,52 @@ namespace NP_Config
 
         private void SaveAll_Click(object sender, EventArgs e)
         {
-            error = false;
-
-            for (int i = 0; i < quantityNP; i++)
+            for (int n = 0; n < quantityNP; n++)
             {
-                if (error = pages[i].ErrorChecking()) return;  // проверка заполнения всех адресов датчиков
-            }
+                OpenUserControl(n + 1);
 
-            for (int i = 0; i < quantityNP; i++)    //для поиска датчиков во внешних NP
-            {
-                pages[i].AdressDat();
-            }
+                error = false;
 
-            List_alien_NP_clear();
-            search_indx();
-
-            if (error == false)
-            {
                 for (int i = 0; i < quantityNP; i++)
                 {
-                    pages[i].FormingResult();
+                    if (error = pages[i].ErrorChecking()) return;  // проверка заполнения всех адресов датчиков
                 }
 
-                for (int i = 0; i < quantityNP; i++)
+                for (int i = 0; i < quantityNP; i++)    //для поиска датчиков во внешних NP
                 {
-                    Stream mySaveStream;
-                    SaveFileDialog saveFileDialog1 = new SaveFileDialog();
-                    saveFileDialog1.RestoreDirectory = true;
-                    saveFileDialog1.Filter = "txt files (*.ini)|*.ini";
-                    saveFileDialog1.FilterIndex = 2;
-                    saveFileDialog1.FileName = "NP" + (i+1) + "_Config";
+                    pages[i].AdressDat();
+                }
 
-                    if (saveFileDialog1.ShowDialog() == DialogResult.OK)
-                    {
-                        if ((mySaveStream = saveFileDialog1.OpenFile()) != null)
+                List_alien_NP_clear();
+                search_indx();
+
+                if (error == false)
+                {
+                    //for (int i = 0; i < quantityNP; i++)
+                    //{
+                        pages[n].FormingResult();
+                    //}
+
+                    //for (int i = 0; i < quantityNP; i++)
+                    //{
+                        Stream mySaveStream;
+                        SaveFileDialog saveFileDialog1 = new SaveFileDialog();
+                        saveFileDialog1.RestoreDirectory = true;
+                        saveFileDialog1.Filter = "txt files (*.ini)|*.ini";
+                        saveFileDialog1.FilterIndex = 2;
+                        saveFileDialog1.FileName = "NP" + (n + 1) + "_Config";
+
+                        if (saveFileDialog1.ShowDialog() == DialogResult.OK)
                         {
-                            StreamWriter TEXT = new StreamWriter(mySaveStream, System.Text.Encoding.UTF8, 512);
-                            TEXT.Write(pages[i].Result.Text);
-                            TEXT.Close();
+                            if ((mySaveStream = saveFileDialog1.OpenFile()) != null)
+                            {
+                                StreamWriter TEXT = new StreamWriter(mySaveStream, System.Text.Encoding.UTF8, 512);
+                                TEXT.Write(pages[n].Result.Text);
+                                TEXT.Close();
+                            }
                         }
-                    }
-                    else return;
+                        else return;
+                    //}
                 }
             }
         }
