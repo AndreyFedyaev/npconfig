@@ -675,8 +675,6 @@
         private System.Windows.Forms.Label label34;
         private System.Windows.Forms.Label label35;
         private System.Windows.Forms.Label label36;
-        private System.Windows.Forms.NumericUpDown numericUpDown4;
-        private System.Windows.Forms.NumericUpDown numericUpDown3;
         private System.Windows.Forms.Label label30;
         private System.Windows.Forms.TextBox UCH_Name;
         public System.Windows.Forms.TextBox textBox6;
@@ -714,5 +712,7 @@
         public System.Windows.Forms.TextBox textBox1;
         public System.Windows.Forms.NumericUpDown numericUpDown2;
         public System.Windows.Forms.NumericUpDown numericUpDown1;
+        public System.Windows.Forms.NumericUpDown numericUpDown4;
+        public System.Windows.Forms.NumericUpDown numericUpDown3;
     }
 }

@@ -258,7 +258,7 @@ namespace NP_Config
         public void ViewingConfig ()   // Создаем файл для предварительного просмотра Config.ini
         {
             //Создаем файл++++
-            StreamWriter TEXT = new StreamWriter("ViewingConfig.ini", false);
+            StreamWriter TEXT = new StreamWriter("ViewingConfig.ini", false, System.Text.Encoding.UTF8, 512);
             TEXT.WriteLine(Result.Text);
             TEXT.Close();
 
@@ -281,7 +281,7 @@ namespace NP_Config
             {
                 if ((myStream = saveFileDialog1.OpenFile()) != null)
                 {
-                    StreamWriter TEXT = new StreamWriter(myStream);
+                    StreamWriter TEXT = new StreamWriter(myStream, System.Text.Encoding.UTF8, 512);
                     TEXT.Write(Result.Text);                              
                     TEXT.Close();
                 }
@@ -423,7 +423,12 @@ namespace NP_Config
             numericUpDown4.Value = 0;
             UCH_Name.Text = null;
 
-            ListUCH ();  //обновление списка добавленных участков
+            UCHMetod();
+        }
+
+        public void UCHMetod ()
+        {
+            ListUCH();  //обновление списка добавленных участков
 
             for (int i = 0; i < kUCH; i++)
             {
@@ -498,7 +503,7 @@ namespace NP_Config
 
                     for (int k = 1; k < 6; k++)
                     {
-                        if (UCH[z, k] != "")
+                        if (UCH[z, k] != "" & UCH[z, k] != null)
                         {
                             kLeftUCH++;
                             UCH_AddressLeftDat[k - 1].Visible = true;
@@ -512,7 +517,7 @@ namespace NP_Config
                     }
                     for (int k = 6; k < 11; k++)
                     {
-                        if (UCH[z, k] != "")
+                        if (UCH[z, k] != "" & UCH[z, k] != null)
                         {
                             kRightUCH++;
                             UCH_AddressRightDat[k - 6].Visible = true;

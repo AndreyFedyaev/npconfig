@@ -627,6 +627,7 @@ namespace NP_Config
                         for (int m = 0; m < 8; m++)
                         {
                             IP_NP = AlienNP[i, hhh[m, 0]];
+
                             for (int k = 0; k < quantityNP; k++)
                             {
                                if (pages[k].textBox16.Text == IP_NP)
@@ -636,8 +637,78 @@ namespace NP_Config
                                 }
                             }
                         }
+                        //Количество конфигурируемых участков
+                        //sr.ReadLine();
+                        tmp = sr.ReadLine().Split('\'');
+                        int kUCH = Int32.Parse(tmp[0], System.Globalization.NumberStyles.HexNumber);
+
+                        // Отсюда начинаем считывать участки
+                        for (int h = 0; h < kUCH; h++)
+                        {
+                            tmp = sr.ReadLine().Split(' ', '\'');
+                            pages[i].UCH[pages[i].kUCH, 0] = tmp[tmp.Length - 1];
+                                for (int k = 0; k < Convert.ToInt32(tmp[0]); k++)
+                                {
+                                    int var = (Int32.Parse(tmp[k + 2], System.Globalization.NumberStyles.HexNumber) >> 7);
+                                    if (var == 0)
+                                    {
+                                        
+                                        int var2 = Int32.Parse(tmp[k + 2], System.Globalization.NumberStyles.HexNumber);     //определили индекс датчика
+                                        var2 = Convert.ToInt32(Index_AdressDat[i, var2 - 1]);       //определили адрес датчика
+                                        for (int n = 1; n < 6; n++)
+                                        {
+                                            if (pages[i].UCH[pages[i].kUCH, n] == null)
+                                            {
+                                                pages[i].UCH[pages[i].kUCH, n] = Convert.ToString(var2);
+                                                break;
+                                            }
+                                        }
+                                    }
+                                    if (var == 1)
+                                    {
+                                        int var2 = Int32.Parse(tmp[k + 2], System.Globalization.NumberStyles.HexNumber) ^ 128;     //определили индекс датчика
+                                        var2 = Convert.ToInt32(Index_AdressDat[i, var2 - 1]);       //определили адрес датчика
+                                        for (int n = 6; n < 11; n++)
+                                        {
+                                            if (pages[i].UCH[pages[i].kUCH, n] == null)
+                                            {
+                                                pages[i].UCH[pages[i].kUCH, n] = Convert.ToString(var2);
+                                                break;
+                                            }
+                                        }
+                                    }
+                                    
+                                }
+                                pages[i].kUCH++;
+                        }
+                        pages[i].UCHMetod();
+                    }
+                    Check_AlienNP();
+                }
+            }
+        }
+
+        int err = 0;
+        void Check_AlienNP ()   //Проверка открытия всех внешних NP
+        {
+            
+            for (int i = 0; i < quantityNP; i++)
+            {
+                if (err == 1) break;
+                for (int k = 0; k < 20; k++)
+                {
+                    if (err == 1) break;
+                    for (int n = 0; n < 11; n++)
+                    {
+                        if (err == 1) break;
+                        if (pages[i].UCH[k,n] == "0")
+                        {
+                            MessageBox.Show("Не все внешние NP были добавлены! \r\n\r\n Результаты будут не корректные! ", "Внимание!");
+                            err = 1;
+                        }
                     }
                 }
+                
             }
         }
         bool WarningCleanProgramm ()    //Предупреждение очистки формы при открытии файла
@@ -688,21 +759,20 @@ namespace NP_Config
                     pages[i].FormingResult();
                 }
 
-                Stream mySaveStream;
-                SaveFileDialog saveFileDialog1 = new SaveFileDialog();
-                saveFileDialog1.RestoreDirectory = true;
-                saveFileDialog1.Filter = "txt files (*.ini)|*.ini";
-                saveFileDialog1.FilterIndex = 2;
-
                 for (int i = 0; i < quantityNP; i++)
                 {
+                    Stream mySaveStream;
+                    SaveFileDialog saveFileDialog1 = new SaveFileDialog();
+                    saveFileDialog1.RestoreDirectory = true;
+                    saveFileDialog1.Filter = "txt files (*.ini)|*.ini";
+                    saveFileDialog1.FilterIndex = 2;
                     saveFileDialog1.FileName = "NP" + (i+1) + "_Config";
 
                     if (saveFileDialog1.ShowDialog() == DialogResult.OK)
                     {
                         if ((mySaveStream = saveFileDialog1.OpenFile()) != null)
                         {
-                            StreamWriter TEXT = new StreamWriter(mySaveStream);
+                            StreamWriter TEXT = new StreamWriter(mySaveStream, System.Text.Encoding.UTF8, 512);
                             TEXT.Write(pages[i].Result.Text);
                             TEXT.Close();
                         }
