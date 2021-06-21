@@ -44,6 +44,7 @@
             this.NPAdd = new System.Windows.Forms.PictureBox();
             this.NPDelete = new System.Windows.Forms.PictureBox();
             this.tabPage2 = new System.Windows.Forms.TabPage();
+            this.button1 = new System.Windows.Forms.Button();
             this.tabControl1.SuspendLayout();
             this.tabPage1.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.NPAdd)).BeginInit();
@@ -65,6 +66,7 @@
             // tabPage1
             // 
             this.tabPage1.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(130)))), ((int)(((byte)(130)))), ((int)(((byte)(150)))));
+            this.tabPage1.Controls.Add(this.button1);
             this.tabPage1.Controls.Add(this.SaveAll);
             this.tabPage1.Controls.Add(this.Open);
             this.tabPage1.Controls.Add(this.Clear);
@@ -254,6 +256,22 @@
             this.tabPage2.Text = "Сменить направление счета";
             this.tabPage2.UseVisualStyleBackColor = true;
             // 
+            // button1
+            // 
+            this.button1.BackColor = System.Drawing.SystemColors.MenuBar;
+            this.button1.FlatAppearance.BorderColor = System.Drawing.Color.Black;
+            this.button1.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
+            this.button1.Font = new System.Drawing.Font("Arial", 8F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
+            this.button1.ForeColor = System.Drawing.Color.Black;
+            this.button1.Location = new System.Drawing.Point(1155, 8);
+            this.button1.Margin = new System.Windows.Forms.Padding(4);
+            this.button1.Name = "button1";
+            this.button1.Size = new System.Drawing.Size(100, 31);
+            this.button1.TabIndex = 283;
+            this.button1.Text = "Справка";
+            this.button1.UseVisualStyleBackColor = false;
+            this.button1.Click += new System.EventHandler(this.button1_Click);
+            // 
             // Form1
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(8F, 16F);
@@ -288,6 +306,7 @@
         private System.Windows.Forms.Button Clear;
         private System.Windows.Forms.Button Open;
         private System.Windows.Forms.Button SaveAll;
+        private System.Windows.Forms.Button button1;
     }
 }
 

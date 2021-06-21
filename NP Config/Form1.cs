@@ -793,5 +793,14 @@ namespace NP_Config
             }
         }
 
+        private void button1_Click(object sender, EventArgs e)
+        {
+            Form3 helpform = new Form3();
+
+            StreamReader help = new StreamReader("help.txt");
+            helpform.textBox1.Text = help.ReadToEnd();
+
+            helpform.Show();
+        }
     }
 }

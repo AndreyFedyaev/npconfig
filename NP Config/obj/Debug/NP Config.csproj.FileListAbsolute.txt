@@ -42,3 +42,4 @@ D:\GitLab_ASC\КБ4\npconfig\NP Config\obj\Debug\NP Config.csproj.GenerateResour
 D:\GitLab_ASC\КБ4\npconfig\NP Config\obj\Debug\NP Config.exe
 D:\GitLab_ASC\КБ4\npconfig\NP Config\obj\Debug\NP Config.pdb
 D:\GitLab_ASC\КБ4\npconfig\NP Config\obj\Debug\NP_Config.Form2.resources
+D:\GitLab_ASC\КБ4\npconfig\NP Config\obj\Debug\NP_Config.Form3.resources
